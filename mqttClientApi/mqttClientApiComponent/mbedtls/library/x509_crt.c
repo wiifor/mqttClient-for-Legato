@@ -1151,10 +1151,14 @@ int mbedtls_x509_crt_parse_path( mbedtls_x509_crt *chain, const char *path )
 
     FindClose( hFind );
 #else /* _WIN32 */
+    // TODO : #1193 - Fix/update mbedtls library used here (error at build time)
+    // - simple workaround has been applied meanwhile, increasing entry_name size from 255 to 257
+    // - updates in the 2.9 release used here should fix the issue properly (minor API changes)
+    // - updating to latest realse 2.16 (Long Term Support branch) could be benefic
     int t_ret;
     struct stat sb;
     struct dirent *entry;
-    char entry_name[255];
+    char entry_name[257];
     DIR *dir = opendir( path );
 
     if( dir == NULL )
